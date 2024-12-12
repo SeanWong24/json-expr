@@ -1,26 +1,21 @@
 [
+  "$",
   [
     "def",
+    "fibonacci",
     [
-      "fibonacci",
+      "cond",
+      ["eq", ["arg", 0], 0],
+      0,
+      ["eq", ["arg", 0], 1],
+      1,
+      true,
       [
-        "cond",
-        [
-          ["eq", [["arg", [0]], 0]],
-          0,
-          ["eq", [["arg", [0]], 1]],
-          1,
-          true,
-          [
-            "add",
-            [
-              ["fibonacci", [["sub", [["arg", [0]], 1]]]],
-              ["fibonacci", [["sub", [["arg", [0]], 2]]]]
-            ]
-          ]
-        ]
+        "add",
+        ["fibonacci", ["sub", ["arg", 0], 1]],
+        ["fibonacci", ["sub", ["arg", 0], 2]]
       ]
     ]
   ],
-  ["fibonacci", [10]]
+  ["fibonacci", 10]
 ]

@@ -1,34 +1,28 @@
 [
-  ["use", ["./fibonacci.json"]],
+  "$",
+  ["@", "./fibonacci.json"],
   [
     "def",
+    "repeat",
     [
-      "loop",
+      "cond",
       [
-        "cond",
+        "lt",
+        ["arg", 0],
+        ["arg", 1]
+      ],
+      [
+        "$",
+        ["print_fibonacci", ["arg", 0]],
         [
-          [
-            "lt",
-            [
-              ["arg", [0]],
-              ["arg", [1]]
-            ]
-          ],
-          [
-            ["print_fibonacci", [["arg", [0]]]],
-            [
-              "loop",
-              [
-                ["add", [["arg", [0]], 1]],
-                ["arg", [1]]
-              ]
-            ]
-          ]
+          "repeat",
+          ["add", ["arg", 0], 1],
+          ["arg", 1]
         ]
       ]
     ]
   ],
-  ["def", ["print_fibonacci", ["print", [["fibonacci", [["arg", [0]]]]]]]],
-  ["loop", [0, 10]],
+  ["def", "print_fibonacci", ["print", ["fibonacci", ["arg", 0]]]],
+  ["repeat", 0, 10],
   "Done"
 ]

@@ -1,5 +1,58 @@
 # A JSON-based Expression Syntax and the Evaluator
 
+## Syntax
+
+### Expression
+
+An expression can be a basic expression (`string | number | boolean | null`) or
+a functinal expression (calling a function).
+
+When evaluating, a basic expression would result itself, yet a functional
+expression would be further evaluated its result.
+
+### Write the JSON
+
+For a basic expression, just simply put it as is.
+
+```json
+"foo"
+```
+
+```json
+3.1415826
+```
+
+```json
+true
+```
+
+```json
+null
+```
+
+They would be evaluated as they are.
+
+For a functional expression, it should be surrounded by `[]`. Inside the `[]`,
+the first element should be the function name, then it is followed by the
+function arguments.
+
+```json
+["add", 1, 1]
+/* evaluated value: 2 */
+```
+
+A set of built-in functions are provided and can be loaded into the evaluator.
+
+### Special Functions
+
+- Use `def` function to define a custom function, inside the defined function
+  body, `arg` function is provided, which takes a number as argument and returns
+  the arguments passed into the defined function.
+- Use `$` function to define a sequence of expressions, which evaluates its
+  arguments one by one and return the last evaluated value.
+- Use `@` function to run another JSON Exp file, which is useful to load custom
+  functions in another file.
+
 ## Usage (with Deno)
 
 The evaluator can be run by either

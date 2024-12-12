@@ -32,6 +32,7 @@ export const JSONExpFns = {
   },
   utils: {
     print: console.log,
+    input: prompt,
   },
   math: {
     neg: (x: number) => -x,

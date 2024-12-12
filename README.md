@@ -41,7 +41,41 @@ function arguments.
 /* evaluated value: 2 */
 ```
 
+### Built-in Functions
+
 A set of built-in functions are provided and can be loaded into the evaluator.
+
+- types
+  - str
+  - int
+  - float
+  - arr
+  - get
+  - set
+  - len
+- utils
+  - print
+  - input
+- math
+ - neg
+ - add
+ - sub
+ - mul
+ - div
+ - pow
+ - mod
+- logic
+  - eq
+  - se
+  - ne
+  - nse
+  - gt
+  - lt
+  - gte
+  - lte
+  - and
+  - or
+  - not
 
 ### Special Functions
 

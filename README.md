@@ -57,13 +57,13 @@ A set of built-in functions are provided and can be loaded into the evaluator.
   - print
   - input
 - math
- - neg
- - add
- - sub
- - mul
- - div
- - pow
- - mod
+  - neg
+  - add
+  - sub
+  - mul
+  - div
+  - pow
+  - mod
 - logic
   - eq
   - se

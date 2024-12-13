@@ -16,9 +16,23 @@
     ["float", ["input", "Enter the radius of the pizza (in inches): "]]
   ],
   [
-    "print",
-    "The area of a pizza is",
-    ["pizza_area", ["prompt_radius"]],
-    "square inches."
+    "def",
+    "main",
+    [
+      "$",
+      [
+        "print",
+        "The area of a pizza with radius of",
+        ["arg", 0],
+        "inches is",
+        ["pizza_area", ["arg", 0]],
+        "square inches."
+      ],
+      ["pizza_area", ["arg", 0]]
+    ]
+  ],
+  [
+    "main",
+    10
   ]
 ]

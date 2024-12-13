@@ -28,7 +28,7 @@ For a basic expression, just simply put it as is.
 ```
 
 ```json
-3.1415826
+3.1415926
 ```
 
 ```json
@@ -68,19 +68,24 @@ The evaluator can be run by either
 - clone the repo and run
 
   ```sh
-  deno run -A mod.ts --corefns=<fn-definition-file> --fns=<fn-definition-file> <json-file-to-be-evaluated>
+  deno run -A src/cli.ts
+  ```
+- or
+
+  ```sh
+  deno task start src/cli.ts
   ```
 
 - or directly run with the URL
 
   ```sh
-  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/mod.ts --corefns=<fn-definition-file> --fns=<fn-definition-file> <json-file-to-be-evaluated>
+  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/src/cli.ts
   ```
 
 For example, to evaluate
-[`./examples/fibonacci/main.json`](./examples/fibonacci/main.json) with
-functions defined in [`./fns.ts`](`./fns.ts`):
+[`./examples/fibonacci/main.json`](./examples/fibonacci/main.json) with default
+function set:
 
 ```sh
-deno run -A mod.ts --corefns=./core-fns.ts --fns=./fns.ts ./examples/fibonacci/main.json
+deno task start ./examples/fibonacci/main.json
 ```

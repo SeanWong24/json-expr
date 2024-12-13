@@ -1,4 +1,4 @@
-import { EvalOptions, Expr } from "./mod.ts";
+import { EvalOptions, Expr } from "../src/mod.ts";
 
 export default {
   cond: async (options: EvalOptions, ...args: Expr[]) => {

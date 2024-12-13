@@ -1,4 +1,4 @@
-import { Expr } from "./mod.ts";
+import { Expr } from "../src/mod.ts";
 
 export const catalogue = {
   types: {

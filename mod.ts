@@ -61,7 +61,7 @@ export const JSONExpFns = {
   },
 };
 
-export class JSONExp {
+export class JsonEx {
   #coreFns: Fns = {
     cond: async (options: EvalOptions, ...args: Expr[]) => {
       for (let i = 0; i * 2 < args.length; i++) {
@@ -140,13 +140,13 @@ export class JSONExp {
 if (import.meta.main) {
   const jsonPath = Deno.args[0] ?? "./examples/factorial/main.json";
   if (!jsonPath) {
-    console.log(`Usage: json-exp <JOSN_FILE_PATH>`);
+    console.log(`Usage: json-ex <JOSN_FILE_PATH>`);
     Deno.exit();
   }
   const resolvedPath = new URL(jsonPath, `file://${Deno.cwd()}/`).href;
   const expr: Expr =
     (await import(resolvedPath, { with: { type: "json" } })).default;
-  const jsonExp = new JSONExp().addFns(JSONExpFns.ALL);
-  const value = await jsonExp.eval(expr, { basePath: resolvedPath });
+  const jsonEx = new JsonEx().addFns(JSONExpFns.ALL);
+  const value = await jsonEx.eval(expr, { basePath: resolvedPath });
   console.info("evaluated value:", value);
 }

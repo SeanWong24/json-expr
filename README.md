@@ -50,43 +50,7 @@ function arguments.
 /* evaluated value: 2 */
 ```
 
-### Built-in Functions
-
-A set of built-in functions are provided and can be loaded into the evaluator.
-
-- types
-  - str
-  - int
-  - float
-  - arr
-  - get
-  - set
-  - len
-- utils
-  - print
-  - input
-- math
-  - neg
-  - add
-  - sub
-  - mul
-  - div
-  - pow
-  - mod
-- logic
-  - eq
-  - se
-  - ne
-  - nse
-  - gt
-  - lt
-  - gte
-  - lte
-  - and
-  - or
-  - not
-
-### Special Functions
+### Core Functions
 
 - Use `cond` function to define logic branches.
 - Use `def` function to define a custom function, inside the defined function
@@ -104,18 +68,19 @@ The evaluator can be run by either
 - clone the repo and run
 
   ```sh
-  deno run -A mod.ts <json-file-to-be-evaluated>
+  deno run -A mod.ts --fns=<fn-definition-file> <json-file-to-be-evaluated>
   ```
 
 - or directly run with the URL
 
   ```sh
-  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/mod.ts <json-file-to-be-evaluated>
+  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/mod.ts --fns=<fn-definition-file> <json-file-to-be-evaluated>
   ```
 
 For example, to evaluate
-[`./examples/fibonacci/main.json`](./examples/fibonacci/main.json):
+[`./examples/fibonacci/main.json`](./examples/fibonacci/main.json) with
+functions defined in [`./fns.ts`](`./fns.ts`):
 
 ```sh
-deno run -A mod.ts ./examples/fibonacci/main.json
+deno run -A mod.ts --fns=./fns.ts ./examples/fibonacci/main.json
 ```

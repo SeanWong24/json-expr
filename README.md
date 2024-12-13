@@ -50,7 +50,7 @@ function arguments.
 /* evaluated value: 2 */
 ```
 
-### Core Functions
+### Default Core Functions
 
 - Use `cond` function to define logic branches.
 - Use `def` function to define a custom function, inside the defined function
@@ -59,7 +59,7 @@ function arguments.
 - Use `$` function to define a sequence of expressions, which evaluates its
   arguments one by one and return the last evaluated value.
 - Use `@` function to run another JSON file, which is useful to load custom
-  functions in another file.
+  functions in another JSON file.
 
 ## Usage (with Deno)
 
@@ -68,13 +68,13 @@ The evaluator can be run by either
 - clone the repo and run
 
   ```sh
-  deno run -A mod.ts --fns=<fn-definition-file> <json-file-to-be-evaluated>
+  deno run -A mod.ts --corefns=<fn-definition-file> --fns=<fn-definition-file> <json-file-to-be-evaluated>
   ```
 
 - or directly run with the URL
 
   ```sh
-  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/mod.ts --fns=<fn-definition-file> <json-file-to-be-evaluated>
+  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/mod.ts --corefns=<fn-definition-file> --fns=<fn-definition-file> <json-file-to-be-evaluated>
   ```
 
 For example, to evaluate
@@ -82,5 +82,5 @@ For example, to evaluate
 functions defined in [`./fns.ts`](`./fns.ts`):
 
 ```sh
-deno run -A mod.ts --fns=./fns.ts ./examples/fibonacci/main.json
+deno run -A mod.ts --corefns=./core-fns.ts --fns=./fns.ts ./examples/fibonacci/main.json
 ```

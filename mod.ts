@@ -10,51 +10,26 @@ export type Expr =
 // deno-lint-ignore ban-types
 export type Fns = Record<string, Function>;
 
-type EvalOptions = {
+export type EvalOptions = {
+  evalFn?: EvalFn;
+  coreFns: Fns;
   fns: Fns;
   basePath: string;
 };
 
+export type EvalFn = (
+  expr: Expr,
+  options?: Partial<EvalOptions>,
+) => Promise<Expr>;
+
 export class JsonEx {
-  #coreFns: Fns = {
-    cond: async (options: EvalOptions, ...args: Expr[]) => {
-      for (let i = 0; i * 2 < args.length; i++) {
-        const predicate = args[i * 2];
-        const handler = args[i * 2 + 1];
-        if (await this.eval(predicate, options)) {
-          return await this.eval(handler, options);
-        }
-      }
-    },
-    def: (options: EvalOptions, name: string, expr: Expr) => {
-      const handler = async (...args: unknown[]) => {
-        return await this.eval(expr, {
-          ...options,
-          fns: {
-            ...options.fns,
-            args: () => args,
-            arg: (i: number) => args[i],
-          },
-        });
-      };
-      this.#normalFns[name] = handler;
-    },
-    $: async (options: EvalOptions, ...body: Expr[]) => {
-      let result: Expr = void 0;
-      for (const expr of body) {
-        result = await this.eval(expr, options);
-      }
-      return result;
-    },
-    "@": async (options: EvalOptions, jsonPath: string) => {
-      const resolvedPath = new URL(jsonPath, options.basePath).href;
-      const expr = (await import(resolvedPath, {
-        with: { type: "json" },
-      })).default;
-      await this.eval(expr, { ...options, basePath: resolvedPath });
-    },
-  };
+  #coreFns: Fns = {};
   #normalFns: Fns = {};
+
+  addCoreFns(fns: Fns) {
+    this.#coreFns = { ...this.#coreFns, ...fns };
+    return this;
+  }
 
   addFns(fns: Fns) {
     this.#normalFns = { ...this.#normalFns, ...fns };
@@ -65,6 +40,12 @@ export class JsonEx {
     if (!Array.isArray(expr)) {
       return expr;
     }
+    if (!options.evalFn) {
+      options.evalFn = this.eval;
+    }
+    if (!options.coreFns) {
+      options.coreFns = this.#coreFns;
+    }
     if (!options.fns) {
       options.fns = this.#normalFns;
     }
@@ -74,16 +55,15 @@ export class JsonEx {
     }
     // deno-lint-ignore ban-types
     let fn: Function | undefined = void 0;
-    fn = this.#coreFns[fnName];
+    fn = options.coreFns?.[fnName];
     if (fn) {
       return await fn(options, ...args);
     }
-    const fns = options.fns ?? this.#normalFns;
-    fn = fns[fnName];
+    fn = options.fns?.[fnName];
     if (fn) {
       return await fn(
         ...await Promise.all(
-          args.map(async (arg) => await this.eval(arg, options)),
+          args.map(async (arg) => await options.evalFn?.(arg, options)),
         ),
       );
     }

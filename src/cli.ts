@@ -1,4 +1,4 @@
-import { parseArgs } from "@std/cli/parse-args";
+import { parseArgs } from "jsr:@std/cli/parse-args";
 import { Expr, Fns, JsonEx } from "./mod.ts";
 import DEFAULT_CORE_FNS from "../fns/core-fns.ts";
 import DEFAULT_FNS from "../fns/fns.ts";

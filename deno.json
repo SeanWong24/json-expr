@@ -2,8 +2,5 @@
   "tasks": {
     "dev": "deno run -A --watch src/cli.ts",
     "start": "deno run -A src/cli.ts"
-  },
-  "imports": {
-    "@std/cli": "jsr:@std/cli@^1.0.8"
   }
 }

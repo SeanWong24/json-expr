@@ -138,7 +138,7 @@ export class JsonEx {
 }
 
 if (import.meta.main) {
-  const jsonPath = Deno.args[0] ?? "./examples/factorial/main.json";
+  const jsonPath = Deno.args[0];
   if (!jsonPath) {
     console.log(`Usage: json-ex <JOSN_FILE_PATH>`);
     Deno.exit();

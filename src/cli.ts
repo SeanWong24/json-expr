@@ -2,7 +2,7 @@ import { parseArgs } from "jsr:@std/cli/parse-args";
 import { Expr, FnDict, JsonEx } from "./mod.ts";
 import DEFAULT_FNS from "./default-fns/index.ts";
 
-if (import.meta.main) {
+try {
   const argDict = parseArgs(
     Deno.args,
     { collect: ["corefns", "fns"], negatable: ["default"] },
@@ -38,4 +38,6 @@ if (import.meta.main) {
   }
   const value = await jsonEx.eval(expr, { basePath: resolvedPath });
   console.info(value);
+} catch (e) {
+  console.error(e);
 }

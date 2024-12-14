@@ -54,13 +54,26 @@ export async function evaluateExpression(
   }
   const [fnName, ...args] = expr;
   if (typeof fnName !== "string") {
-    throw new Error(`${fnName} is expected to be a function name.`);
+    throw new Error(
+      `${JSON.stringify(fnName)} is expected to be a function name.`,
+      {
+        cause: {
+          currentExpression: expr,
+          evaluationStack: _options.exprStack,
+        },
+      },
+    );
   }
   const fn = _options.fns?.[fnName];
   if (fn) {
     return await fn(_options, ...args) as Expr;
   }
-  throw new Error(`${fnName} is not defined.`);
+  throw new Error(`${JSON.stringify(fnName)} is not defined.`, {
+    cause: {
+      currentExpression: expr,
+      evaluationStack: _options.exprStack,
+    },
+  });
 }
 
 export class JsonEx {

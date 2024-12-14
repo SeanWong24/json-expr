@@ -1,4 +1,4 @@
-import { SimpleFn, wrapSimpleFn } from "../src/mod.ts";
+import { SimpleFn, wrapSimpleFn } from "../mod.ts";
 
 const fns: Record<string, SimpleFn> = {
   neg: (x: number) => -x,

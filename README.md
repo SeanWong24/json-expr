@@ -52,7 +52,7 @@ function arguments.
 
 ### Default Functions
 
-Check [`./default-fns`](./default-fns) for default functions.
+Check [`./src/default-fns`](./src/default-fns) for default functions.
 
 Some special functions:
 

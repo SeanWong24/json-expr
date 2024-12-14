@@ -1,4 +1,4 @@
-import { EvalOptions, Expr, SimpleFn, wrapSimpleFn } from "../src/mod.ts";
+import { EvalOptions, Expr, SimpleFn, wrapSimpleFn } from "../mod.ts";
 
 const fns: Record<string, SimpleFn> = {
   eq: (a: unknown, b: unknown) => a == b,

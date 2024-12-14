@@ -8,21 +8,21 @@
       "cond",
       [
         "lt",
-        ["arg", 0],
-        ["arg", 1]
+        ["args", 0],
+        ["args", 1]
       ],
       [
         "$",
-        ["print_factorial", ["arg", 0]],
+        ["print_factorial", ["args", 0]],
         [
           "repeat",
-          ["add", ["arg", 0], 1],
-          ["arg", 1]
+          ["add", ["args", 0], 1],
+          ["args", 1]
         ]
       ]
     ]
   ],
-  ["def", "print_factorial", ["print", ["factorial", ["arg", 0]]]],
+  ["def", "print_factorial", ["print", ["factorial", ["args", 0]]]],
   ["repeat", 0, 10],
   "Done"
 ]

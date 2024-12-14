@@ -64,8 +64,7 @@ const specialFns = {
         ...options,
         fns: {
           ...options.fns,
-          args: () => args,
-          arg: (_, i: number) => args[i],
+          args: (_, i: number) => i >= 0 ? args[i] : args,
         },
       })
     );

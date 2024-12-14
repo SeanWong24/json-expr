@@ -5,10 +5,10 @@
     "factorial",
     [
       "cond",
-      ["eq", ["arg", 0], 0],
+      ["eq", ["args", 0], 0],
       1,
       true,
-      ["mul", ["arg", 0], ["factorial", ["sub", ["arg", 0], 1]]]
+      ["mul", ["args", 0], ["factorial", ["sub", ["args", 0], 1]]]
     ]
   ],
   ["factorial", 4]

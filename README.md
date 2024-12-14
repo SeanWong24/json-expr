@@ -52,9 +52,11 @@ function arguments.
 
 ### Default Core Functions
 
-- Use `def` function to define a custom function, inside the defined function
-  body, `arg` function is provided, which takes a number as argument and returns
-  the arguments passed into the defined function.
+- Use `def` function to define a custom function. Inside the defined function
+  body, a `args` function is provided, which returns the list of arguments that
+  passed into the defined function when it is called. If a `index` argument is
+  given to `args` function, it returns the specific argument at that index
+  instead.
 - Use `$` function to define a sequence of expressions, which evaluates its
   arguments one by one and return the last evaluated value.
 - Use `@` function to run another JSON file, which is useful to load custom

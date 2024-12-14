@@ -7,7 +7,7 @@
     [
       "mul",
       ["pi"],
-      ["mul", ["arg", 0], ["arg", 0]]
+      ["mul", ["args", 0], ["args", 0]]
     ]
   ],
   [
@@ -23,12 +23,12 @@
       [
         "print",
         "The area of a pizza with radius of",
-        ["arg", 0],
+        ["args", 0],
         "inches is",
-        ["pizza_area", ["arg", 0]],
+        ["pizza_area", ["args", 0]],
         "square inches."
       ],
-      ["pizza_area", ["arg", 0]]
+      ["pizza_area", ["args", 0]]
     ]
   ],
   [

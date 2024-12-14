@@ -1,6 +1,5 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
-import { Expr, Fns, JsonEx } from "./mod.ts";
-import DEFAULT_CORE_FNS from "../fns/core-fns.ts";
+import { Expr, FnDict, JsonEx } from "./mod.ts";
 import DEFAULT_FNS from "../fns/fns.ts";
 
 if (import.meta.main) {
@@ -13,9 +12,8 @@ if (import.meta.main) {
     console.log(
       `Usage: json-ex <OPTIONS> <JOSN_FILE_PATH!>\n`,
       `\nOPTIONS:\n`,
-      `--no-default: not to load the default functions\n`,
-      `--corefns=<FUNCTIONS_DEFINITION_FILE_PATH>: add custom core functions, which can be specified multiple times\n`,
-      `--fns=<FUNCTIONS_DEFINITION_FILE_PATH>: add custom core functions, which can be specified multiple times\n`,
+      `--no-default: do not to load the default functions\n`,
+      `--fns=<FUNCTIONS_DEFINITION_FILE_PATH>: add custom functions, which can be specified multiple times\n`,
     );
     Deno.exit();
   }
@@ -25,18 +23,7 @@ if (import.meta.main) {
     (await import(resolvedPath, { with: { type: "json" } })).default;
   const jsonEx = new JsonEx();
   if (argDict.default !== false) {
-    jsonEx.addCoreFns(DEFAULT_CORE_FNS);
     jsonEx.addFns(DEFAULT_FNS);
-  }
-  for (const fnsPath of argDict.corefns ?? []) {
-    if (!fnsPath) {
-      continue;
-    }
-    const resolvedCoreFnsPath =
-      new URL(fnsPath.toString(), `file://${Deno.cwd()}/`).href;
-    const fns: Fns =
-      (await import(resolvedCoreFnsPath, { with: { type: "json" } })).default;
-    jsonEx.addCoreFns(fns);
   }
 
   for (const fnsPath of argDict.fns ?? []) {
@@ -45,7 +32,7 @@ if (import.meta.main) {
     }
     const resolvedFnsPath =
       new URL(fnsPath.toString(), `file://${Deno.cwd()}/`).href;
-    const fns: Fns =
+    const fns: FnDict =
       (await import(resolvedFnsPath, { with: { type: "json" } })).default;
     jsonEx.addFns(fns);
   }

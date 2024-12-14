@@ -52,7 +52,6 @@ function arguments.
 
 ### Default Core Functions
 
-- Use `cond` function to define logic branches.
 - Use `def` function to define a custom function, inside the defined function
   body, `arg` function is provided, which takes a number as argument and returns
   the arguments passed into the defined function.

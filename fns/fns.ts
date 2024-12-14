@@ -1,6 +1,6 @@
-import { Expr } from "../src/mod.ts";
+import { EvalOptions, Expr, SimpleFn, wrapSimpleFn } from "../src/mod.ts";
 
-export const catalogue = {
+const catalogue: Record<string, Record<string, SimpleFn>> = {
   types: {
     str: (v: unknown) => v?.toString() ?? "",
     int: (v: string) => Number.parseInt(v),
@@ -42,7 +42,53 @@ export const catalogue = {
   },
 };
 
+for (const category of Object.values(catalogue)) {
+  for (const key in category) {
+    category[key] = wrapSimpleFn(category[key]);
+  }
+}
+
+const specialFns = {
+  cond: async (options: EvalOptions, ...args: Expr[]) => {
+    for (let i = 0; i * 2 < args.length; i++) {
+      const predicate = args[i * 2];
+      const handler = args[i * 2 + 1];
+      if (await options.evalFn?.(predicate, options)) {
+        return await options.evalFn?.(handler, options);
+      }
+    }
+  },
+  def: (options: EvalOptions, name: string, expr: Expr) => {
+    const handler = wrapSimpleFn(async (...args: unknown[]) =>
+      await options.evalFn?.(expr, {
+        ...options,
+        fns: {
+          ...options.fns,
+          args: () => args,
+          arg: (_, i: number) => args[i],
+        },
+      })
+    );
+    options.fns[name] = handler;
+  },
+  $: async (options: EvalOptions, ...body: Expr[]) => {
+    let result: Expr = void 0;
+    for (const expr of body) {
+      result = await options.evalFn?.(expr, options);
+    }
+    return result;
+  },
+  "@": async (options: EvalOptions, jsonPath: string) => {
+    const resolvedPath = new URL(jsonPath, options.basePath).href;
+    const expr = (await import(resolvedPath, {
+      with: { type: "json" },
+    })).default;
+    return await options.evalFn?.(expr, { ...options, basePath: resolvedPath });
+  },
+};
+
 export default {
+  ...specialFns,
   ...catalogue.types,
   ...catalogue.utils,
   ...catalogue.math,

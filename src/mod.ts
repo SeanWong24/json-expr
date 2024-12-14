@@ -7,13 +7,21 @@ export type Expr =
   | null
   | undefined;
 
-// deno-lint-ignore ban-types
-export type Fns = Record<string, Function>;
+// deno-lint-ignore no-explicit-any
+export type SimpleFn = (...args: any[]) => unknown | Promise<unknown>;
+export type Fn = (
+  options: EvalOptions,
+  // deno-lint-ignore no-explicit-any
+  ...args: any[]
+) => unknown | Promise<unknown>;
+export type FnDict = Record<
+  string,
+  Fn
+>;
 
 export type EvalOptions = {
   evalFn?: EvalFn;
-  coreFns: Fns;
-  fns: Fns;
+  fns: FnDict;
   basePath: string;
 };
 
@@ -22,17 +30,20 @@ export type EvalFn = (
   options?: Partial<EvalOptions>,
 ) => Promise<Expr>;
 
+export const wrapSimpleFn = (fn: SimpleFn) => {
+  return async (options: EvalOptions, ...args: Expr[]) => {
+    const evaluatedArgs = await Promise.all(
+      args.map(async (arg) => await options.evalFn?.(arg, options)),
+    );
+    return await fn(...evaluatedArgs);
+  };
+};
+
 export class JsonEx {
-  #coreFns: Fns = {};
-  #normalFns: Fns = {};
+  #fns: FnDict = {};
 
-  addCoreFns(fns: Fns) {
-    this.#coreFns = { ...this.#coreFns, ...fns };
-    return this;
-  }
-
-  addFns(fns: Fns) {
-    this.#normalFns = { ...this.#normalFns, ...fns };
+  addFns(fns: FnDict) {
+    this.#fns = { ...this.#fns, ...fns };
     return this;
   }
 
@@ -43,11 +54,8 @@ export class JsonEx {
     if (!options.evalFn) {
       options.evalFn = this.eval;
     }
-    if (!options.coreFns) {
-      options.coreFns = this.#coreFns;
-    }
     if (!options.fns) {
-      options.fns = this.#normalFns;
+      options.fns = this.#fns;
     }
     const [fnName, ...args] = expr;
     if (typeof fnName !== "string") {
@@ -55,17 +63,9 @@ export class JsonEx {
     }
     // deno-lint-ignore ban-types
     let fn: Function | undefined = void 0;
-    fn = options.coreFns?.[fnName];
-    if (fn) {
-      return await fn(options, ...args);
-    }
     fn = options.fns?.[fnName];
     if (fn) {
-      return await fn(
-        ...await Promise.all(
-          args.map(async (arg) => await options.evalFn?.(arg, options)),
-        ),
-      );
+      return await fn(options, ...args);
     }
     throw new Error(`${fnName} is not defined.`);
   }

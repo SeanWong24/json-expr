@@ -5,15 +5,16 @@ export type Expr =
   | boolean
   | Expr[]
   | null
-  | undefined;
+  | undefined
+  | void;
 
 // deno-lint-ignore no-explicit-any
-export type SimpleFn = (...args: any[]) => unknown | Promise<unknown>;
+export type SimpleFn = (...args: any[]) => Expr | Promise<Expr>;
 export type Fn = (
   options: EvalOptions,
   // deno-lint-ignore no-explicit-any
   ...args: any[]
-) => unknown | Promise<unknown>;
+) => Expr | Promise<Expr>;
 export type FnDict = Record<
   string,
   Fn
@@ -22,12 +23,13 @@ export type FnDict = Record<
 export type EvalOptions = {
   evalFn?: EvalFn;
   fns: FnDict;
-  basePath: string;
+  basePath?: string;
+  exprStack: Expr[];
 };
 
 export type EvalFn = (
   expr: Expr,
-  options?: Partial<EvalOptions>,
+  options: EvalOptions,
 ) => Promise<Expr>;
 
 export const wrapSimpleFn = (fn: SimpleFn) => {
@@ -39,6 +41,28 @@ export const wrapSimpleFn = (fn: SimpleFn) => {
   };
 };
 
+export async function evaluateExpression(
+  expr: Expr,
+  options: EvalOptions,
+): Promise<Expr> {
+  const _options: EvalOptions = {
+    ...options,
+  };
+  _options.exprStack = [expr, ..._options.exprStack];
+  if (!Array.isArray(expr)) {
+    return expr;
+  }
+  const [fnName, ...args] = expr;
+  if (typeof fnName !== "string") {
+    throw new Error(`${fnName} is expected to be a function name.`);
+  }
+  const fn = _options.fns?.[fnName];
+  if (fn) {
+    return await fn(_options, ...args) as Expr;
+  }
+  throw new Error(`${fnName} is not defined.`);
+}
+
 export class JsonEx {
   #fns: FnDict = {};
 
@@ -47,26 +71,12 @@ export class JsonEx {
     return this;
   }
 
-  async eval(expr: Expr, options: Partial<EvalOptions> = {}): Promise<Expr> {
-    if (!Array.isArray(expr)) {
-      return expr;
-    }
-    if (!options.evalFn) {
-      options.evalFn = this.eval;
-    }
-    if (!options.fns) {
-      options.fns = this.#fns;
-    }
-    const [fnName, ...args] = expr;
-    if (typeof fnName !== "string") {
-      throw new Error(`${fnName} is expected to be a function name.`);
-    }
-    // deno-lint-ignore ban-types
-    let fn: Function | undefined = void 0;
-    fn = options.fns?.[fnName];
-    if (fn) {
-      return await fn(options, ...args);
-    }
-    throw new Error(`${fnName} is not defined.`);
+  async eval(expr: Expr, options: Partial<EvalOptions> = {}) {
+    return await evaluateExpression(expr, {
+      exprStack: [],
+      evalFn: evaluateExpression,
+      fns: this.#fns ?? {},
+      ...options,
+    });
   }
 }

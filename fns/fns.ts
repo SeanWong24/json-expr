@@ -6,13 +6,14 @@ const catalogue: Record<string, Record<string, SimpleFn>> = {
     int: (v: string) => Number.parseInt(v),
     float: (v: string) => Number.parseFloat(v),
     arr: (...args: unknown[]) => args,
-    get: (i: string | number, obj: Record<string | number, unknown>) =>
-      obj?.[i],
+    get: (i: string | number, obj: Record<string | number, Expr>) => obj?.[i],
     set: (
       i: string | number,
       v: unknown,
       obj: Record<string | number, unknown>,
-    ) => obj && (obj[i] = v),
+    ) => {
+      obj && (obj[i] = v);
+    },
     len: (v: string | Array<number>) => v.length,
   },
   utils: {
@@ -64,7 +65,7 @@ const specialFns = {
         ...options,
         fns: {
           ...options.fns,
-          args: (_, i: number) => i >= 0 ? args[i] : args,
+          args: (_, i: number) => (i >= 0 ? args[i] : args) as Expr,
         },
       })
     );

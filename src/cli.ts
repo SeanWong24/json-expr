@@ -1,6 +1,6 @@
 import { parseArgs } from "jsr:@std/cli/parse-args";
 import { Expr, FnDict, JsonEx } from "./mod.ts";
-import DEFAULT_FNS from "../fns/fns.ts";
+import DEFAULT_FNS from "../default-fns/index.ts";
 
 if (import.meta.main) {
   const argDict = parseArgs(

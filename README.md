@@ -50,7 +50,11 @@ function arguments.
 /* evaluated value: 2 */
 ```
 
-### Default Core Functions
+### Default Functions
+
+Check [`./default-fns`](./default-fns) for default functions.
+
+Some special functions:
 
 - Use `def` function to define a custom function. Inside the defined function
   body, a `args` function is provided, which returns the list of arguments that

@@ -1,0 +1,9 @@
+{
+  "nodeModulesDir": "auto",
+  "unstable": ["sloppy-imports"],
+  "lint": { "rules": { "exclude": ["no-sloppy-imports"] } },
+  "exclude": ["dist/"],
+  "tasks": {
+    "cli": "deno run -A src/cli.ts"
+  }
+}

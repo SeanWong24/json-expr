@@ -1,3 +1,4 @@
+import process from "node:process";
 import minimist from "minimist";
 import { Expr, FnDict, JsonEx } from "./mod.js";
 import DEFAULT_FNS from "./default-fns/index.js";

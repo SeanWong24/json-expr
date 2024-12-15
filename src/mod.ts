@@ -24,12 +24,11 @@ export class Scope {
 
   parent?: Scope;
   expr?: Expr;
-  basePath?: string;
   args: Expr[] = [];
 
   get fns() {
     return new Proxy(this.#fns, {
-      get: (target, name: string) => target[name] ?? this.parent?.getFn(name),
+      get: (target, name: string) => target[name] ?? this.parent?.fns[name],
     });
   }
   set fns(value: FnDict) {
@@ -52,14 +51,6 @@ export class Scope {
       return this;
     }
     return this.parent.root;
-  }
-
-  getFn(name: string): Fn | undefined {
-    return this.fns[name] ?? this.parent?.getFn(name);
-  }
-
-  getBasePath(): string | undefined {
-    return this.basePath ?? this.parent?.getBasePath();
   }
 
   createChild(overrides: Partial<Omit<Scope, "parent">> & { expr: Expr }) {

@@ -1,4 +1,4 @@
-import { EvalOptions, Expr, SimpleFn, wrapSimpleFn } from "../mod.ts";
+import { evaluate, Expr, Scope, SimpleFn, wrapSimpleFn } from "../mod.ts";
 
 const fns: Record<string, SimpleFn> = {
   eq: (a: unknown, b: unknown) => a == b,
@@ -18,12 +18,12 @@ for (const key in fns) {
   fns[key] = wrapSimpleFn(fns[key]);
 }
 
-fns.cond = async (options: EvalOptions, ...args: Expr[]) => {
-  for (let i = 0; i * 2 < args.length; i++) {
-    const predicate = args[i * 2];
-    const handler = args[i * 2 + 1];
-    if (await options.evalFn?.(predicate, options)) {
-      return await options.evalFn?.(handler, options);
+fns.cond = async (scope: Scope) => {
+  for (let i = 0; i * 2 < scope.args.length; i++) {
+    const predicate = scope.args[i * 2];
+    const handler = scope.args[i * 2 + 1];
+    if (await evaluate(predicate, scope)) {
+      return await evaluate(handler, scope);
     }
   }
 };

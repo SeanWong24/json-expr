@@ -23,20 +23,24 @@ expression would be further evaluated its result.
 
 For a basic expression, just simply put it as is.
 
-```json
+```jsonc
 "foo"
+/* evaluated value: "foo" */
 ```
 
-```json
+```jsonc
 3.1415926
+/* evaluated value: 3.1415926 */
 ```
 
-```json
+```jsonc
 true
+/* evaluated value: true */
 ```
 
-```json
+```jsonc
 null
+/* evaluated value: null */
 ```
 
 They would be evaluated as they are.
@@ -45,9 +49,16 @@ For a functional expression, it should be surrounded by `[]`. Inside the `[]`,
 the first element should be the function name, then it is followed by the
 function arguments.
 
-```json
+```jsonc
 ["add", 1, 1]
 /* evaluated value: 2 */
+```
+
+Functional expression can also be nested.
+
+```jsonc
+["add", ["mul", 2, 2], 1]
+/* evaluated value: 5 */
 ```
 
 ### Default Functions
@@ -56,11 +67,12 @@ Check [`./src/default-fns`](./src/default-fns) for default functions.
 
 Some special functions:
 
-- Use `def` function to define a custom function. Inside the defined function
-  body, a `args` function is provided, which returns the list of arguments that
-  passed into the defined function when it is called. If a `index` argument is
-  given to `args` function, it returns the specific argument at that index
-  instead.
+- Use `def` function to define a custom function.
+- Use `gdef` function to define a custom function in the global scope.
+- The `args` function can be used inside a defined function body, which returns
+  the list of arguments that passed into the defined function when it is called.
+  If a `index` argument is given to `args` function, it returns the specific
+  argument at that index instead.
 - Use `$` function to define a sequence of expressions, which evaluates its
   arguments one by one and return the last evaluated value.
 - Use `@` function to run another JSON file, which is useful to load custom

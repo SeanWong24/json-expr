@@ -12,11 +12,6 @@
   ],
   [
     "def",
-    "prompt_radius",
-    ["float", ["input", "Enter the radius of the pizza (in inches): "]]
-  ],
-  [
-    "def",
     "main",
     [
       "$",

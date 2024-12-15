@@ -10,45 +10,87 @@ export type Expr =
 
 // deno-lint-ignore no-explicit-any
 export type SimpleFn = (...args: any[]) => Expr | Promise<Expr>;
-export type Fn = (
-  options: EvalOptions,
-  // deno-lint-ignore no-explicit-any
-  ...args: any[]
-) => Expr | Promise<Expr>;
+export type Fn = (scope: Scope) => Expr | Promise<Expr>;
 export type FnDict = Record<
   string,
   Fn
 >;
 
-export type EvalOptions = {
-  evalFn?: EvalFn;
-  fns: FnDict;
+export type Metadata = Record<string, unknown>;
+
+export class Scope {
+  #fns: FnDict = {};
+  #metadata: Metadata = {};
+
+  parent?: Scope;
+  expr?: Expr;
   basePath?: string;
-  exprStack: Expr[];
-};
+  args: Expr[] = [];
+
+  get fns() {
+    return new Proxy(this.#fns, {
+      get: (target, name: string) => target[name] ?? this.parent?.getFn(name),
+    });
+  }
+  set fns(value: FnDict) {
+    this.#fns = value;
+  }
+
+  get metadata() {
+    return new Proxy(this.#metadata, {
+      get: (target, name: string) =>
+        target[name] ??
+          this.parent?.metadata[name],
+    });
+  }
+  set metadata(value: Metadata) {
+    this.#metadata = value;
+  }
+
+  get root(): Scope {
+    if (!this.parent) {
+      return this;
+    }
+    return this.parent.root;
+  }
+
+  getFn(name: string): Fn | undefined {
+    return this.fns[name] ?? this.parent?.getFn(name);
+  }
+
+  getBasePath(): string | undefined {
+    return this.basePath ?? this.parent?.getBasePath();
+  }
+
+  createChild(overrides: Partial<Omit<Scope, "parent">> & { expr: Expr }) {
+    return new Scope({ ...overrides, parent: this });
+  }
+
+  constructor(
+    overrides: Partial<Scope>,
+  ) {
+    Object.assign(this, overrides);
+  }
+}
 
 export type EvalFn = (
   expr: Expr,
-  options: EvalOptions,
+  options: Scope,
 ) => Promise<Expr>;
 
 export const wrapSimpleFn = (fn: SimpleFn) => {
-  return async (options: EvalOptions, ...args: Expr[]) => {
+  return async (scope: Scope) => {
     const evaluatedArgs = await Promise.all(
-      args.map(async (arg) => await options.evalFn?.(arg, options)),
+      scope.args.map(async (arg) => await evaluate(arg, scope)),
     );
     return await fn(...evaluatedArgs);
   };
 };
 
-export async function evaluateExpression(
+export async function evaluate(
   expr: Expr,
-  options: EvalOptions,
+  scope: Scope,
 ): Promise<Expr> {
-  const _options: EvalOptions = {
-    ...options,
-  };
-  _options.exprStack = [expr, ..._options.exprStack];
   if (!Array.isArray(expr)) {
     return expr;
   }
@@ -56,24 +98,13 @@ export async function evaluateExpression(
   if (typeof fnName !== "string") {
     throw new Error(
       `${JSON.stringify(fnName)} is expected to be a function name.`,
-      {
-        cause: {
-          currentExpression: expr,
-          evaluationStack: _options.exprStack,
-        },
-      },
     );
   }
-  const fn = _options.fns?.[fnName];
-  if (fn) {
-    return await fn(_options, ...args) as Expr;
+  const fn = scope.fns[fnName];
+  if (!fn) {
+    throw new Error(`${JSON.stringify(fnName)} is not defined.`);
   }
-  throw new Error(`${JSON.stringify(fnName)} is not defined.`, {
-    cause: {
-      currentExpression: expr,
-      evaluationStack: _options.exprStack,
-    },
-  });
+  return await fn(scope.createChild({ expr, args })) as Expr;
 }
 
 export class JsonEx {
@@ -84,12 +115,13 @@ export class JsonEx {
     return this;
   }
 
-  async eval(expr: Expr, options: Partial<EvalOptions> = {}) {
-    return await evaluateExpression(expr, {
-      exprStack: [],
-      evalFn: evaluateExpression,
-      fns: this.#fns ?? {},
-      ...options,
-    });
+  async eval(expr: Expr, metadata: Metadata = {}) {
+    return await evaluate(
+      expr,
+      new Scope({
+        fns: this.#fns ?? {},
+        metadata,
+      }),
+    );
   }
 }

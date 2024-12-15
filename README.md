@@ -63,20 +63,10 @@ Functional expression can also be nested.
 
 ### Default Functions
 
-Check [`./src/default-fns`](./src/default-fns) for default functions.
+Check [`./src/default-fns`](./src/default-fns) for a set of default functions
+that available to be loaded into the evaluator.
 
-Some special functions:
-
-- Use `def` function to define a custom function.
-- Use `gdef` function to define a custom function in the global scope.
-- The `args` function can be used inside a defined function body, which returns
-  the list of arguments that passed into the defined function when it is called.
-  If a `index` argument is given to `args` function, it returns the specific
-  argument at that index instead.
-- Use `$` function to define a sequence of expressions, which evaluates its
-  arguments one by one and return the last evaluated value.
-- Use `@` function to run another JSON file, which is useful to load custom
-  functions in another JSON file.
+For the CLI usage, all these functions are loaded by default.
 
 ## Try it out
 

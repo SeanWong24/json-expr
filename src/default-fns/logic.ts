@@ -1,4 +1,4 @@
-import { evaluate, Expr, Scope, SimpleFn, wrapSimpleFn } from "../mod.ts";
+import { evaluate, Expr, Scope, SimpleFn, wrapSimpleFn } from "../mod.js";
 
 const fns: Record<string, SimpleFn> = {
   eq: (a: unknown, b: unknown) => a == b,

@@ -1,4 +1,4 @@
-import { Expr, SimpleFn, wrapSimpleFn } from "../mod.ts";
+import { Expr, SimpleFn, wrapSimpleFn } from "../mod.js";
 
 const fns: Record<string, SimpleFn> = {
   str: (v: unknown) => v?.toString() ?? "",

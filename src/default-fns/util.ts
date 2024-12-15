@@ -1,4 +1,4 @@
-import { evaluate, Expr, Scope, SimpleFn, wrapSimpleFn } from "../mod.ts";
+import { evaluate, Expr, Scope, SimpleFn, wrapSimpleFn } from "../mod.js";
 
 const defineFunctionInScope = (scope: Scope, distScope: Scope) => {
   const [name, expr] = scope.args as [

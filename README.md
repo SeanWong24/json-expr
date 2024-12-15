@@ -78,25 +78,14 @@ Some special functions:
 - Use `@` function to run another JSON file, which is useful to load custom
   functions in another JSON file.
 
-## Usage (with Deno)
+## Try it out
 
 The evaluator can be run by either
 
 - clone the repo and run
 
   ```sh
-  deno run -A src/cli.ts
-  ```
-- or
-
-  ```sh
-  deno task start src/cli.ts
-  ```
-
-- or directly run with the URL
-
-  ```sh
-  deno run -A https://raw.githubusercontent.com/SeanWong24/json-ex/refs/heads/main/src/cli.ts
+  npm run cli
   ```
 
 For example, to evaluate
@@ -104,5 +93,5 @@ For example, to evaluate
 function set:
 
 ```sh
-deno task start ./examples/fibonacci/main.json
+npm run cli ./examples/fibonacci/main.json
 ```

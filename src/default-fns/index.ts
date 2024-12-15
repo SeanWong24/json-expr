@@ -1,7 +1,7 @@
-import data from "./data.ts";
-import logic from "./logic.ts";
-import math from "./math.ts";
-import util from "./util.ts";
+import data from "./data.js";
+import logic from "./logic.js";
+import math from "./math.js";
+import util from "./util.js";
 
 export default {
   ...data,

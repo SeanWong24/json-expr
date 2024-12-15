@@ -19,6 +19,19 @@ const defineFunctionInScope = (scope: Scope, distScope: Scope) => {
 
 const fns: Record<string, SimpleFn> = {
   print: wrapSimpleFn(console.log),
+  "~": (scope: Scope) => scope.args[0],
+  "`": async (scope: Scope) => {
+    const arg = scope.args[0];
+    if (typeof arg !== "object") {
+      return arg;
+    }
+    for (const key in arg) {
+      const obj = arg as Record<string | number, Expr>;
+      const expr = obj[key];
+      obj[key] = await evaluate(expr, scope);
+    }
+    return arg;
+  },
   args: (scope: Scope) => {
     const index = scope.args[0];
     const invokedArgs = scope.metadata.invokedArgs as Expr[];

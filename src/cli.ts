@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import process from "node:process";
 import minimist from "minimist";
 import Evaluator, { Expr, FnDict } from "./mod.js";

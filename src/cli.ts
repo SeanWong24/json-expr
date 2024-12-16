@@ -2,8 +2,7 @@
 
 import process from "node:process";
 import minimist from "minimist";
-import Evaluator, { Expr, FnDict } from "./mod.js";
-import DEFAULT_FNS from "./default-fns/index.js";
+import Evaluator, { DEFAULT_FNS, Expr, FnDict } from "./mod.js";
 
 try {
   const argDict = minimist(process.argv.slice(2));

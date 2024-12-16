@@ -150,7 +150,7 @@ For the CLI usage, all these functions are loaded by default.
 
     ```jsonc
     [
-      "`",
+      "~",
       [0, 1, ["add", 0, 1]]
     ]
     /* evaluated value: [0, 1, ["add", 0, 1]] */
@@ -195,7 +195,7 @@ import Evaluator, { DEFAULT_FNS } from "json-ex";
 const evaluator = new Evaluator();
 
 // load default functions (can also be custom set of function)
-// this method can be called multiple time, the later might override the previous if two functions has the same name
+// this method can be called multiple times, the later might override the previous if two functions has the same name
 evaluator.addFns(DEFAULT_FNS);
 
 // obtain the JSON object to be evaluated
@@ -207,6 +207,47 @@ const result = await evaluator.eval(json);
 // optionally print out the result
 console.log(result);
 // it prints: 2
+```
+
+### Security and Controllability
+
+Since it requires to load a set of functions to be used for the evaluation, we
+have full control of how powerful and safe the evaluation environment could be.
+By loading different set of pre-defined function for each specific case, we can
+provide different feature and different permission level. If nothing is provided
+as the pre-defined functions, it basically can do no functional evaluation at
+all.
+
+For example, if we only provide `def`, `add` and `neg` as the pre-defined
+function set, the user might be able to achieve `sub` like this below. However,
+they would not be able to access anything more than what we provided like
+console access or file access. If we do not provide `def`, the user cannot even
+define a custom function.
+
+```jsonc
+[
+  "$",
+  ["def", "sub", ["add", ["args", 0], ["neg", ["args", 1]]]],
+  ["sub", 2, 1]
+]
+/* evaluated value: 2 */
+```
+
+Sometimes, we might want to give some more abilities in a specific use case. For
+example, we can implement and provide a `cmd_args` function that allowing users
+to obtain the arguments passed from the command line. So the user might be able
+to achieve something like below.
+
+```jsonc
+// assuming the command args are: ["http://localhost", 8080]
+[
+  "`",
+  {
+    "appName": "Foo",
+    "url": ["add", ["cmd_args", 0], ["add", ":", ["cmd_args", 1]]]
+  }
+]
+// evaluated value: { appName: 'Foo', url: 'http://localhost:8000' }
 ```
 
 ### Function Implementation
@@ -221,7 +262,7 @@ The evaluator can be run by either
   ```sh
   npx https://github.com/SeanWong24/json-ex
   ```
-- clone the repo and run
+- install the package and then run
 
   ```sh
   npx json-ex

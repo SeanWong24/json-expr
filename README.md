@@ -182,7 +182,27 @@ For the CLI usage, all these functions are loaded by default.
 
 ### Evaluation
 
-...
+```ts
+import Evaluator from "./dist/mod.js";
+import DEFAULT_FNS from "./dist/default-fns/index.js";
+
+// create an evaluator instance
+const evaluator = new Evaluator();
+
+// load default functions (can also be custom set of function)
+// this method can be called multiple time, the later might override the previous if two functions has the same name
+evaluator.addFns(DEFAULT_FNS);
+
+// obtain the JSON object to be evaluated
+const json = ["add", 1, 1];
+
+// evaulate and get the result
+const result = await evaluator.eval(json);
+
+// optionally print out the result
+console.log(result);
+// it prints: 2
+```
 
 ### Function Implementation
 

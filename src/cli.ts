@@ -1,6 +1,6 @@
 import process from "node:process";
 import minimist from "minimist";
-import { Expr, FnDict, JsonEx } from "./mod.js";
+import Evaluator, { Expr, FnDict } from "./mod.js";
 import DEFAULT_FNS from "./default-fns/index.js";
 
 try {
@@ -20,9 +20,9 @@ try {
     new URL(jsonPath.toString(), `file://${process.cwd()}/`).href;
   const expr: Expr =
     (await import(resolvedPath, { with: { type: "json" } })).default;
-  const jsonEx = new JsonEx();
+  const evaluator = new Evaluator();
   if (argDict.default !== false) {
-    jsonEx.addFns(DEFAULT_FNS);
+    evaluator.addFns(DEFAULT_FNS);
   }
 
   const fns = Array.isArray(argDict.fns) ? argDict.fns : [argDict.fns];
@@ -33,9 +33,9 @@ try {
     const resolvedFnsPath =
       new URL(fnsPath.toString(), `file://${process.cwd()}/`).href;
     const fns: FnDict = (await import(resolvedFnsPath)).default;
-    jsonEx.addFns(fns);
+    evaluator.addFns(fns);
   }
-  const value = await jsonEx.eval(expr, { basePath: resolvedPath });
+  const value = await evaluator.eval(expr, { basePath: resolvedPath });
   console.info(value);
 } catch (e) {
   console.error(e);

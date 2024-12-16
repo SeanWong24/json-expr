@@ -98,7 +98,7 @@ export async function evaluate(
   return await fn(scope.createChild({ expr, args })) as Expr;
 }
 
-export class JsonEx {
+export class Evaluator {
   #fns: FnDict = {};
 
   addFns(fns: FnDict) {
@@ -116,3 +116,5 @@ export class JsonEx {
     );
   }
 }
+
+export default Evaluator;

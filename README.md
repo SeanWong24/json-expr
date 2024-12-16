@@ -1,11 +1,11 @@
-# JsonEx
+# Json-Ex
 
-JsonEx is a JSON-based customizable expression syntax that allows you to define
+Json-Ex is a JSON-based customizable expression syntax that allows you to define
 and execute logic securely. By controlling the set of available built-in
 functions, it provides the flexibility for a wide range of tasks, from simple
 calculations to more advanced logic, all within a safe execution environment.
 
-JsonEx enables secure dynamic logic for use cases like automation,
+Json-Ex enables secure dynamic logic for use cases like automation,
 configuration, and rule execution. Its customizable function set allows for
 flexible, condition-driven logic tailored to the application’s needs.
 

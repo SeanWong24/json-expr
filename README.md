@@ -180,11 +180,16 @@ For the CLI usage, all these functions are loaded by default.
 
 ## Evaluator
 
+### Installation
+
+```sh
+npm i https://github.com/SeanWong24/json-ex
+```
+
 ### Evaluation
 
 ```ts
-import Evaluator from "./dist/mod.js";
-import DEFAULT_FNS from "./dist/default-fns/index.js";
+import Evaluator, { DEFAULT_FNS } from "json-ex";
 
 // create an evaluator instance
 const evaluator = new Evaluator();
@@ -212,10 +217,14 @@ console.log(result);
 
 The evaluator can be run by either
 
+- using GIT link
+  ```sh
+  npx https://github.com/SeanWong24/json-ex
+  ```
 - clone the repo and run
 
   ```sh
-  npm run cli
+  npx json-ex
   ```
 
 For example, to evaluate
@@ -223,5 +232,5 @@ For example, to evaluate
 function set:
 
 ```sh
-npm run cli ./examples/fibonacci/main.json
+npx json-ex ./examples/fibonacci/main.json
 ```

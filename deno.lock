@@ -5,6 +5,7 @@
     "npm:@types/node@*": "22.5.4",
     "npm:@types/node@^22.10.2": "22.10.2",
     "npm:minimist@^1.2.8": "1.2.8",
+    "npm:typescript@5.7.2": "5.7.2",
     "npm:typescript@^5.7.2": "5.7.2"
   },
   "npm": {

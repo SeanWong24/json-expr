@@ -252,7 +252,24 @@ to achieve something like below.
 
 ### Function Implementation
 
-...
+The pre-defined functions are implemented as a specific type
+[`Fn`](./src/core/fn.ts), which takes a [`Scope`](./src/core/scope.ts) object as
+argument and returns a [`Expr | Promise<Expr>`](./src/core/expr.ts). The result
+would always be awaited.
+
+By taking the `Scope` arugment, the function can have control of the evaluation
+such as whether to evaluation the inner expression and setting some metadata.
+
+The more common cases might not need to have control of the evaluation. In such
+cases, a "simple function" can be implemented, which simply takes some
+arguments, returns something, and nothing more. For example, an `add` function
+might be implemented as a "simple function" like `(x, y) => x + y`, which takes
+two arguments and adds them together. To make a "simple function" Json-Ex
+compatible, a `wrapSimpleFn` helper function is provided, which takes a "simple
+function" as arugment and returns a Json-Ex compatible function. Internally, it
+evaluates all arugments that would be received by the "simple function" before
+passing them into the simple function. Most of the default functions are
+implemented using this way.
 
 ### CLI
 

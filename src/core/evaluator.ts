@@ -1,6 +1,7 @@
 import { evaluate } from "./evaluation.js";
-import { Scope } from "./scope.js";
-import { Expr, FnDict, Metadata } from "./types.js";
+import { FnDict } from "./fn.js";
+import { Metadata, Scope } from "./scope.js";
+import { Expr } from "./expr.js";
 
 export class Evaluator {
   #fns: FnDict = {};

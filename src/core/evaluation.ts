@@ -1,5 +1,5 @@
 import { Scope } from "./scope.js";
-import { Expr } from "./types.js";
+import { Expr } from "./expr.js";
 
 export async function evaluate(
   expr: Expr,

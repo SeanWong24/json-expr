@@ -1,4 +1,7 @@
-import { Expr, FnDict, Metadata } from "./types.js";
+import { FnDict } from "./fn.js";
+import { Expr } from "./expr.js";
+
+export type Metadata = Record<string, unknown>;
 
 export class Scope {
   #fns: FnDict = {};

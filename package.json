@@ -1,8 +1,11 @@
 {
   "name": "@seanwong24/json-x",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "JSON-X is a JSON-based customizable expression syntax that allows you to define and execute logic securely. By controlling the set of available built-in functions, it provides the flexibility for a wide range of tasks, from simple calculations to more advanced logic, all within a safe execution environment.",
-  "keywords": ["json", "expression"],
+  "keywords": [
+    "json",
+    "expression"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/SeanWong24/json-x.git"
@@ -10,7 +13,9 @@
   "main": "dist/mod.js",
   "types": "dist/mod.d.ts",
   "type": "module",
-  "files": ["dist/"],
+  "files": [
+    "dist/"
+  ],
   "bin": "dist/cli.js",
   "scripts": {
     "cli": "npm run build && node dist/cli",

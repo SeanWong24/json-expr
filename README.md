@@ -183,7 +183,7 @@ For the CLI usage, all these functions are loaded by default.
 ### Installation
 
 ```sh
-npm i https://github.com/SeanWong24/json-x
+npm i @seanwong24/json-x
 ```
 
 ### Evaluation
@@ -277,7 +277,7 @@ The evaluator can be run by either
 
 - using GIT link
   ```sh
-  npx https://github.com/SeanWong24/json-x
+  npx @seanwong24/json-x
   ```
 - install the package and then run
 

@@ -1,11 +1,11 @@
-# Json-Ex
+# JSON-X
 
-Json-Ex is a JSON-based customizable expression syntax that allows you to define
+JSON-X is a JSON-based customizable expression syntax that allows you to define
 and execute logic securely. By controlling the set of available built-in
 functions, it provides the flexibility for a wide range of tasks, from simple
 calculations to more advanced logic, all within a safe execution environment.
 
-Json-Ex enables secure dynamic logic for use cases like automation,
+JSON-X enables secure dynamic logic for use cases like automation,
 configuration, and rule execution. Its customizable function set allows for
 flexible, condition-driven logic tailored to the application’s needs.
 
@@ -183,13 +183,13 @@ For the CLI usage, all these functions are loaded by default.
 ### Installation
 
 ```sh
-npm i https://github.com/SeanWong24/json-ex
+npm i https://github.com/SeanWong24/json-x
 ```
 
 ### Evaluation
 
 ```ts
-import Evaluator, { DEFAULT_FNS } from "json-ex";
+import Evaluator, { DEFAULT_FNS } from "json-x";
 
 // create an evaluator instance
 const evaluator = new Evaluator();
@@ -264,9 +264,9 @@ The more common cases might not need to have control of the evaluation. In such
 cases, a "simple function" can be implemented, which simply takes some
 arguments, returns something, and nothing more. For example, an `add` function
 might be implemented as a "simple function" like `(x, y) => x + y`, which takes
-two arguments and adds them together. To make a "simple function" Json-Ex
+two arguments and adds them together. To make a "simple function" JSON-X
 compatible, a `wrapSimpleFn` helper function is provided, which takes a "simple
-function" as arugment and returns a Json-Ex compatible function. Internally, it
+function" as arugment and returns a JSON-X compatible function. Internally, it
 evaluates all arugments that would be received by the "simple function" before
 passing them into the simple function. Most of the default functions are
 implemented using this way.
@@ -277,12 +277,12 @@ The evaluator can be run by either
 
 - using GIT link
   ```sh
-  npx https://github.com/SeanWong24/json-ex
+  npx https://github.com/SeanWong24/json-x
   ```
 - install the package and then run
 
   ```sh
-  npx json-ex
+  npx json-x
   ```
 
 For example, to evaluate
@@ -290,5 +290,5 @@ For example, to evaluate
 function set:
 
 ```sh
-npx json-ex ./examples/fibonacci/main.json
+npx json-x ./examples/fibonacci/main.json
 ```

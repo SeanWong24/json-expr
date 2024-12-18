@@ -10,7 +10,7 @@ try {
   const jsonPath = argDict["_"][0];
   if (!jsonPath) {
     console.log(
-      `Usage: json-ex <OPTIONS> <JOSN_FILE_PATH!>\n`,
+      `Usage: json-x <OPTIONS> <JOSN_FILE_PATH!>\n`,
       `\nOPTIONS:\n`,
       `--no-default: do not to load the default functions\n`,
       `--fns=<FUNCTIONS_DEFINITION_FILE_PATH>: add custom functions, which can be specified multiple times\n`,

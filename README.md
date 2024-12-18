@@ -189,7 +189,7 @@ npm i @seanwong24/json-x
 ### Evaluation
 
 ```ts
-import Evaluator, { DEFAULT_FNS } from "json-x";
+import Evaluator, { DEFAULT_FNS } from "@seanwong24/json-x";
 
 // create an evaluator instance
 const evaluator = new Evaluator();
@@ -275,11 +275,11 @@ implemented using this way.
 
 The evaluator can be run by either
 
-- using GIT link
+- run remotely
   ```sh
   npx @seanwong24/json-x
   ```
-- install the package and then run
+- install the package and then run locally
 
   ```sh
   npx json-x

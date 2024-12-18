@@ -1,6 +1,6 @@
 [
   "$",
-  ["@", "./fibonacci.json"],
+  ["@", "./factorial.x.json"],
   [
     "def",
     "repeat",
@@ -13,7 +13,7 @@
       ],
       [
         "$",
-        ["print_fibonacci", ["args", 0]],
+        ["print_factorial", ["args", 0]],
         [
           "repeat",
           ["add", ["args", 0], 1],
@@ -22,7 +22,7 @@
       ]
     ]
   ],
-  ["def", "print_fibonacci", ["print", ["fibonacci", ["args", 0]]]],
+  ["def", "print_factorial", ["print", ["factorial", ["args", 0]]]],
   ["repeat", 0, 10],
   "Done"
 ]

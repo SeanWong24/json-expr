@@ -286,9 +286,9 @@ The evaluator can be run by either
   ```
 
 For example, to evaluate
-[`./examples/fibonacci/main.json`](./examples/fibonacci/main.json) with default
-function set:
+[`./examples/fibonacci/main.x.json`](./examples/fibonacci/main.x.json) with
+default function set:
 
 ```sh
-npx json-x ./examples/fibonacci/main.json
+npx json-x ./examples/fibonacci/main.x.json
 ```

@@ -1,13 +1,17 @@
 # JSON-X
 
 JSON-X is a JSON-based customizable expression syntax that allows you to define
-and execute logic securely. By controlling the set of available built-in
+and execute logic securely. By controlling the set of available pre-defined
 functions, it provides the flexibility for a wide range of tasks, from simple
-calculations to more advanced logic, all within a safe execution environment.
+calculations to more advanced logic.
 
-JSON-X enables secure dynamic logic for use cases like automation,
-configuration, and rule execution. Its customizable function set allows for
-flexible, condition-driven logic tailored to the application’s needs.
+It enables secure dynamic logic for use cases like automation, configuration,
+and rule execution. Its customizable function set allows for flexible,
+condition-driven logic tailored to the application’s needs.
+
+## Play with It
+
+[Playground](https://seanwong24.github.io/json-x)
 
 ## Syntax
 
@@ -18,17 +22,19 @@ There are two types of expression:
 - **basic** expression (`string | number | boolean | object | null`)
 - **functinal** expression (calling a function).
 
-**Note that `Array` is not a basic expression type, since we use the array in
-JSON as the syntax of a functional expression. An array may be created by call a
+**Note that `Array` is not a basic expression type, since it is already been
+used as the syntax of a functional expression. An array may be created by call a
 pre-defined array-creation function.**
 
 When evaluating, a basic expression would result itself, yet a functional
-expression would be further evaluated its result.
+expression would be further evaluated for its result.
 
 For a functional expression to be worked, the function needs to be defined
 first. The pre-defined functions can be configured for each evaluator instance
-created. If the default function set is loaded, it also provides a `def`
-function that can be used to define custom functions using JSON.
+created. A default set of pre-defined functions is provided to be potentially
+loaded into the evaluator. If the default function set is loaded, it also
+provides a `def` function that can be used to define custom functions using
+JSON.
 
 ### Default Functions
 
@@ -189,13 +195,16 @@ npm i @seanwong24/json-x
 ### Evaluation
 
 ```ts
+// the default pre-defined function set can be imported as `DEFAULT_FNS`
+// it is an object with string as key and JSON_X compatible function as value
 import Evaluator, { DEFAULT_FNS } from "@seanwong24/json-x";
 
 // create an evaluator instance
 const evaluator = new Evaluator();
 
-// load default functions (can also be custom set of function)
-// this method can be called multiple times, the later might override the previous if two functions has the same name
+// load the default functions, which can also be a custom set of functions
+// it should be an object with string as key and JSON_X compatible function as value
+// this method can be called multiple times, the later loaded functions might override the previous if two functions has the same name
 evaluator.addFns(DEFAULT_FNS);
 
 // obtain the JSON object to be evaluated

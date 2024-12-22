@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JSON-X Playground</title>
+    <script
+      type="module"
+      src="https://esm.sh/@hey-web-components/monaco-editor@^0.4"
+    ></script>
+    <script type="module" defer>
+      import Evaluator, {
+        DEFAULT_FNS,
+      } from "https://esm.sh/@seanwong24/json-x";
+
+      const editor = document.querySelector("#json-editor");
+      const button = document.querySelector("#evaluation-button");
+      const loadJsonButtons = document.querySelectorAll(".load-json-button");
+      const result = document.querySelector("#result-editor");
+
+      loadJsonButtons.forEach(async (button, i) => {
+        const { filePath } = button.dataset;
+        if (!filePath) return;
+        const fileName = filePath.split("/").at(-1);
+        button.textContent = `Load ${fileName}`;
+        const expr = await fetch(new URL(filePath, document.baseURI)).then(
+          (res) => res.text()
+        );
+        button.addEventListener("click", () => {
+          editor.value = expr;
+        });
+        if (i === 0) {
+          button.click();
+        }
+      });
+
+      result.options = { readOnly: true };
+
+      button.addEventListener("click", async () => {
+        const evaluator = new Evaluator();
+        evaluator.addFns(DEFAULT_FNS);
+        let expr;
+        try {
+          expr = JSON.parse(editor.value);
+        } catch {}
+        const evalResult = await evaluator.eval(expr);
+        result.textContent = JSON.stringify(evalResult);
+      });
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        display: grid;
+        gap: 0.5rem;
+        grid-template-columns: 1fr auto 1fr;
+        height: 100vh;
+      }
+      #json-editor,
+      #result-editor {
+        border: 1px solid;
+      }
+      button {
+        margin: 1rem;
+        height: fit-content;
+        width: 100%;
+        margin: 0;
+      }
+      .section {
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-rows: auto 1fr;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="section">
+      <h1 style="text-align: center">JSON Expression</h1>
+      <hey-monaco-editor
+        id="json-editor"
+        language="json"
+        style="height: 100%; width: 100%"
+      ></hey-monaco-editor>
+    </div>
+    <div>
+      <button id="evaluation-button">Evaluate</button>
+      <div style="display: flex; flex-direction: column">
+        <h2>Some examples</h2>
+        <button
+          class="load-json-button"
+          data-file-path="./examples/add.x.json"
+        ></button>
+        <button
+          class="load-json-button"
+          data-file-path="./examples/object.x.json"
+        ></button>
+        <button
+          class="load-json-button"
+          data-file-path="./examples/pizza-area.x.json"
+        ></button>
+        <button
+          class="load-json-button"
+          data-file-path="./examples/factorial/factorial.x.json"
+        ></button>
+        <button
+          class="load-json-button"
+          data-file-path="./examples/fibonacci/fibonacci.x.json"
+        ></button>
+      </div>
+    </div>
+    <div class="section">
+      <h1 style="text-align: center">Evaluation Result</h1>
+      <div id="result-editor" style="height: 100%; width: 100%"></div>
+    </div>
+  </body>
+</html>

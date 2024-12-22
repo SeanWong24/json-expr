@@ -1,6 +1,6 @@
 {
   "name": "@seanwong24/json-x",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "JSON-X is a JSON-based customizable expression syntax that allows you to define and execute logic securely. By controlling the set of available pre-defined functions, it provides the flexibility for a wide range of tasks, from simple calculations to more advanced logic.",
   "keywords": [
     "json",
